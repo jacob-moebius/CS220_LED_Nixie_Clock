@@ -5,18 +5,24 @@ from time import sleep
 
 # GPIO SETUP
 # output pin definitions
-ledMinMod0 = [0, 1, 2, 3]
-ledMinMod1 = [0, 1, 2, 3]
-ledHourMod0 = [0, 1, 2, 3]
-ledHourMod1 = [0, 1, 2, 3]
+ledMinMod0 = [12, 16, 20, 21]
+ledMinMod1 = [18, 23, 24, 25]
+ledHourMod0 = [26, 19, 13, 6]
+ledHourMod1 = [22, 27, 17, 4]
 ledPins = [ledMinMod0, ledMinMod1, ledHourMod0, ledHourMod1]
+
+# time bit initialization
+timeMinMod0 = [0, 0, 0, 0]
+timeMinMod1 = [0, 0, 0, 1]
+timeHourMod0 = [0, 0, 1, 0]
+timeHourMod1 = [0, 0, 1, 1]
+timeBits = [timeMinMod0, timeMinMod1, timeHourMod0, timeHourMod1]
 
 # suppress warnings
 GPIO.setwarnings(False)
 
 # use GPIO pin number
-GPIO.setMode(GPIO.BCM)
-
+GPIO.setmode(GPIO.BCM)
 
 # set pins as outputs
 for mod in ledPins:
@@ -51,7 +57,6 @@ while True:
 
     # convert previous instance of datetime object to formatted string hh:mm
     currentTime = timeNow.strftime("%H:%M")
-    print(currentTime)
 
     # split the current_time String into hours and minutes
     currentTimeSplit = currentTime.split(':')
@@ -97,19 +102,20 @@ while True:
         if muxPinSelection is None:
             sys.exit("Error: Number not in Truth Table!")
 
-        # change the bit values of each pin of each module mux to choose the appropriate mux pin address
+        # change the bit values of each pin of each module mux to choose
+        # the appropriate mux pin address
         for j in range(len(muxPinSelection)):
-            ledPins[i][j] = int(muxPinSelection[j])
+            timeBits[i][len(timeBits[i]) - 1 - j] = int(muxPinSelection[j])
 
     # output pin bit values to GPIO
-    for mod in ledPins:
-        for pin in mod:
-            if pin == 0:
-                GPIO.output(pin, GPIO.LOW)
-            elif pin == 1:
-                GPIO.output(pin, GPIO.HIGH)
+    for k in range(len(timeBits)):
+        for m in range(len(timeBits[k])):
+            if timeBits[k][m] == 0:
+                GPIO.output(ledPins[k][m], GPIO.LOW)
+            elif timeBits[k][m] == 1:
+                GPIO.output(ledPins[k][m], GPIO.HIGH)
             else:
                 sys.exit("Error: Incorrect bit format!")
-
+    
     # limit pulling local time to 1 Hz
     sleep(1)
