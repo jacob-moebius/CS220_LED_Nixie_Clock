@@ -1,11 +1,5 @@
 # CS220_LED_Nixie_Clock
 
-Jacob Moebius
-CS 220
-12/18/20
-Final Project – Raspberry Pi
-LED Nixie Clock
-
 ## Introduction
 
 The project is an LED conversion of a Nixie clock. Nixie clocks typically use Nixie tubes widely used between the 1920’s to 1960’s. None have been produced since the 1990’s. These Nixie tubes have 10 wires, 1 for each number, enclosed in a neon filled tube. When the wires have current passed through them, they ionize the gas around them, causing the gas to light up in the shape of the wire. In the case of a clock, the wires are bent in to the shape of numbers 0-9. Simply, the Nixie tubes are replaced by LEDs and acrylic plates, and the clock is run by a program on a Raspberry Pi with the GPIO pins connecting the Raspberry Pi to the number modules.
